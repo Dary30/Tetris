@@ -271,7 +271,6 @@ namespace Tetris
                 DataTable dataTable = new DataTable();
                 adapter.Fill(dataTable);
                 HighScores.ItemsSource = dataTable.DefaultView;
-                //Highscores.ColumnHeaderStyle = ;
                 connection.Close();
             }
         }
