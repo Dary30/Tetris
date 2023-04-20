@@ -136,7 +136,7 @@
               Background="#CC000000"
               Grid.RowSpan="2"
               Grid.ColumnSpan="3"
-              Visibility="Visible">
+              Visibility="Hidden">
 
             <StackPanel>
                 <TextBlock Text="HIGH SCORES"
