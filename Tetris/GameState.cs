@@ -126,8 +126,6 @@
                 GameGrid[p.Row, p.Column] = CurrentBlock.Id;
             }
 
-            //Score += GameGrid.ClearFullRows();
-
             int cleared = GameGrid.ClearFullRows();
 
             if (cleared == 1)
