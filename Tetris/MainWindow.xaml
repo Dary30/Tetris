@@ -11,6 +11,57 @@
         FontFamily="Futura" FontSize="28"
         KeyDown="Window_KeyDown"
         WindowState="Maximized">
+    <Window.Resources>
+        <SolidColorBrush x:Key="PrimaryGreenColor" Color="#2E7D32"/>
+        <SolidColorBrush x:Key="PrimaryTextColor" Color="White"/>
+        <SolidColorBrush x:Key="ButtonHoverColor" Color="#3F8C3F"/>
+        <SolidColorBrush x:Key="ButtonPressColor" Color="#1B5E20"/>
+        
+        <!-- Start: PrimaryButtonStyle-->
+        <Style x:Key="PrimaryButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="{DynamicResource PrimaryGreenColor}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextColor}"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="MaxHeight" Value="80"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="btnBorder" CornerRadius="5"
+                                Background="{TemplateBinding Background}"
+                                Width="{TemplateBinding Width}"
+                                MaxHeight="{TemplateBinding MaxHeight}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="True"
+                                Padding="{TemplateBinding Padding}">
+
+                            <ContentPresenter x:Name="ContentPresenter" Focusable="False"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="btnBorder" Property="Background"
+                                        Value="{DynamicResource ButtonHoverColor}"/>
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="btnBorder" Property="Background"
+                                        Value="{DynamicResource ButtonPressColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- End: PrimaryButtonStyle-->
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -43,6 +94,7 @@
                    Grid.Row="0"
                    Grid.Column="1"
                    Text="Score: "
+                   FontWeight="Medium"
                    Margin="0, 10"
                    TextAlignment="Center"/>
 
@@ -52,6 +104,7 @@
                     HorizontalAlignment="Right">
 
             <TextBlock Text="Hold"
+                       FontWeight="Medium"
                        TextAlignment="Center"/>
 
             <Image x:Name="HoldImage"
@@ -65,6 +118,7 @@
                     HorizontalAlignment="Left">
 
             <TextBlock Text="Next"
+                       FontWeight="Medium"
                        TextAlignment="Center"/>
 
             <Image x:Name="NextImage"
@@ -80,27 +134,37 @@
 
             <StackPanel HorizontalAlignment="Center"
                         VerticalAlignment="Center">
+                <Viewbox>
+                    <StackPanel Width="150">
+                        <TextBlock Text="Game Over"
+                                   FontSize="15"
+                                   FontWeight="Bold"
+                                   Foreground="Red"
+                                   TextAlignment="Center"/>
 
-                <TextBlock Text="Game Over"
-                           FontSize="48"
-                           TextAlignment="Center"/>
+                        <TextBlock x:Name="FinalScoreText"
+                                   Text="Score: "
+                                   FontSize="8"
+                                   FontWeight="Bold"
+                                   Margin="0 -3 0 0"
+                                   TextAlignment="Center"/>
+                    </StackPanel>
+                </Viewbox>
 
-                <TextBlock x:Name="FinalScoreText"
-                           Text="Score: "
-                           FontSize="36"
-                           TextAlignment="Center"/>
+                <StackPanel>
+                    <Button Content="Play Again"
+                            Style="{DynamicResource PrimaryButtonStyle}"
+                            Margin="0 50 0 20"
+                            Padding="0 5"
+                            MaxWidth="200"
+                            Click="PlayAgain_Click"/>
 
-                <Button Content="Play Again"
-                        Background="LimeGreen"
-                        Margin="0 20 0 0"
-                        Padding="5"
-                        Click="PlayAgain_Click"/>
-
-                <Button Content="Main Menu"
-                        Background="LimeGreen"
-                        Margin="0 20 0 0"
-                        Padding="5"
-                        Click="MainMenu_Click"/>
+                    <Button Content="Main Menu"
+                            Style="{DynamicResource PrimaryButtonStyle}"
+                            Padding="0 5"
+                            MaxWidth="200"
+                            Click="MainMenu_Click"/>
+                </StackPanel>
             </StackPanel>
         </Grid>
 
@@ -113,21 +177,20 @@
                         VerticalAlignment="Center">
 
                 <Button Content="Play"
-                        Background="White"
-                        Margin="0 20 0 0"
-                        Padding="10 5"
-                        Click="Play_Click"/>
+                        Style="{DynamicResource PrimaryButtonStyle}"
+                        Padding="0 5"
+                        Click="Play_Click">
+                </Button>
 
                 <Button Content="Leaderboard"
-                        Background="White"
-                        Margin="0 20 0 0"
+                        Style="{DynamicResource PrimaryButtonStyle}"
+                        Margin="0 20"
                         Padding="10 5"
                         Click="Leaderboard_Click"/>
 
                 <Button Content="Quit"
-                        Background="White"
-                        Margin="0 20 0 0"
-                        Padding="10 5"
+                        Style="{DynamicResource PrimaryButtonStyle}"
+                        Padding="0 5"
                         Click="Quit_Click"/>
             </StackPanel>
         </Grid>
@@ -138,33 +201,143 @@
               Grid.ColumnSpan="3"
               Visibility="Hidden">
 
-            <StackPanel>
-                <TextBlock Text="HIGH SCORES"
-                           FontSize="48" FontWeight="Bold"
-                           TextAlignment="Center"
-                           Margin="0 20 0 10"/>
+            <Viewbox>
+                <StackPanel>
+                    <TextBlock Text="HIGH SCORES"
+                               FontSize="45" FontWeight="Bold"
+                               TextAlignment="Center"
+                               Margin="0 20 0 35"/>
 
-                <DataGrid x:Name="HighScores"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center"
-                          Width="250"
-                          Height="450"
-                          FontSize="60" FontFamily="Futura"
-                          HeadersVisibility="None" GridLinesVisibility="None"
-                          IsReadOnly="True"
-                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                          BorderBrush="{x:Null}">
-                </DataGrid>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="1."
+                                   Width="40"
+                                   TextAlignment="Right"
+                                   Margin="20 0 61 0"/>
+                        
+                        <TextBlock x:Name="Score1"
+                                   FontSize="30"
+                                   TextAlignment="Left"
+                                   Width="150"/>
+                    </StackPanel>
 
-                <Button HorizontalAlignment="Center"
-                        VerticalAlignment="Bottom"
-                        Content="Back"
-                        Background="White"
-                        Margin="0 20 0 10"
-                        Padding="10 5"
-                        Click="Back_Click"/>
-            </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="2."
+                                   Width="40"
+                                   TextAlignment="Right"
+                                   Margin="20 0 61 0"/>
+
+                        <TextBlock x:Name="Score2"
+                                   FontSize="30"
+                                   TextAlignment="Left"
+                                   Width="150"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="3."
+                                   Width="40"
+                                   TextAlignment="Right"
+                                   Margin="20 0 61 0"/>
+
+                        <TextBlock x:Name="Score3"
+                                   FontSize="30"
+                                   TextAlignment="Left"
+                                   Width="150"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="4."
+                                   Width="40"
+                                   TextAlignment="Right"
+                                   Margin="20 0 61 0"/>
+
+                        <TextBlock x:Name="Score4"
+                                   FontSize="30"
+                                   TextAlignment="Left"
+                                   Width="150"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="5."
+                                   Width="40"
+                                   TextAlignment="Right"
+                                   Margin="20 0 61 0"/>
+
+                        <TextBlock x:Name="Score5"
+                                   FontSize="30"
+                                   TextAlignment="Left"
+                                   Width="150"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="6."
+                                   Width="40"
+                                   TextAlignment="Right"
+                                   Margin="20 0 61 0"/>
+
+                        <TextBlock x:Name="Score6"
+                                   FontSize="30"
+                                   TextAlignment="Left"
+                                   Width="150"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="7."
+                                   Width="40"
+                                   TextAlignment="Right"
+                                   Margin="20 0 61 0"/>
+
+                        <TextBlock x:Name="Score7"
+                                   FontSize="30"
+                                   TextAlignment="Left"
+                                   Width="150"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="8."
+                                   Width="40"
+                                   TextAlignment="Right"
+                                   Margin="20 0 61 0"/>
+
+                        <TextBlock x:Name="Score8"
+                                   FontSize="30"
+                                   TextAlignment="Left"
+                                   Width="150"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="9."
+                                   Width="40"
+                                   TextAlignment="Right"
+                                   Margin="20 0 61 0"/>
+
+                        <TextBlock x:Name="Score9"
+                                   FontSize="30"
+                                   TextAlignment="Left"
+                                   Width="150"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="10."
+                                   Width="40"
+                                   TextAlignment="Right"
+                                   Margin="20 0 61 0"/>
+
+                        <TextBlock x:Name="Score10"
+                                   FontSize="30"
+                                   TextAlignment="Left"
+                                   Width="150"/>
+                    </StackPanel>
+
+                    <Button HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Content="Back"
+                            Style="{DynamicResource PrimaryButtonStyle}"
+                            FontSize="15"
+                            Margin="0 20"
+                            Padding="5"
+                            Click="Back_Click"/>
+                </StackPanel>
+            </Viewbox>
         </Grid>
     </Grid>
 </Window>
