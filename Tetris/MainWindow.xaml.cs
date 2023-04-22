@@ -49,7 +49,7 @@ namespace Tetris
         private readonly Image[,] imageControls;
         private readonly int maxDelay = 1000;
         private readonly int minDelay = 100;
-        private readonly int delayDecrease = 5;
+        private readonly int delayDecrease = 10;
 
         private GameState gameState = new GameState();
 
@@ -259,19 +259,35 @@ namespace Tetris
         {
             LeaderboardMenu.Visibility = Visibility.Visible;
             MainMenu.Visibility = Visibility.Hidden;
-            
 
             string connectionString = "Data Source=Dary\\SQLEXPRESS;Initial Catalog=Tetris;Integrated Security=True";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            string sqlQuery = "SELECT TOP 10 * FROM Scores ORDER BY Score DESC;";
+            int[] scoreArray = new int[10];
+
+            using(SqlConnection connection = new SqlConnection(connectionString))
             {
-                connection.Open();
-                string query = "SELECT TOP 10 * FROM Scores ORDER BY Score DESC;";
-                SqlCommand command = new SqlCommand(query, connection);
-                SqlDataAdapter adapter = new SqlDataAdapter(command);
-                DataTable dataTable = new DataTable();
-                adapter.Fill(dataTable);
-                HighScores.ItemsSource = dataTable.DefaultView;
-                connection.Close();
+                using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                {
+                    connection.Open();
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        int i = 0;
+                        while (reader.Read())
+                        {
+                            int value = reader.GetInt32(0);
+                            scoreArray[i++] = value;
+                        }
+                    }
+                }
+            }
+
+            TextBlock[] textBlocks = new TextBlock[] {Score1, Score2, Score3, Score4, Score5, Score6,
+                                                      Score7, Score8, Score9, Score10};
+            int j = 0;
+            foreach (int score in scoreArray)
+            {
+                textBlocks[j].Text = score.ToString();
+                j++;
             }
         }
 
