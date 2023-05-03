@@ -19,6 +19,8 @@
     <None Remove="Assets\Block-T.png" />
     <None Remove="Assets\Block-Z.png" />
     <None Remove="Assets\Icon.ico" />
+    <None Remove="Assets\LeaderboardBackground.png" />
+    <None Remove="Assets\Logo.png" />
     <None Remove="Assets\TileBlue.png" />
     <None Remove="Assets\TileCyan.png" />
     <None Remove="Assets\TileEmpty.png" />
@@ -48,6 +50,8 @@
     <Resource Include="Assets\Block-T.png" />
     <Resource Include="Assets\Block-Z.png" />
     <Resource Include="Assets\Icon.ico" />
+    <Resource Include="Assets\LeaderboardBackground.png" />
+    <Resource Include="Assets\Logo.png" />
     <Resource Include="Assets\TileBlue.png" />
     <Resource Include="Assets\TileCyan.png" />
     <Resource Include="Assets\TileEmpty.png" />
