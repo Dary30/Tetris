@@ -169,44 +169,67 @@
         </Grid>
 
         <Grid x:Name="MainMenu"
-              Background="#CC000000"
+              Background="Black"
               Grid.RowSpan="2"
               Grid.ColumnSpan="3">
 
             <StackPanel HorizontalAlignment="Center"
                         VerticalAlignment="Center">
 
-                <Button Content="Play"
-                        Style="{DynamicResource PrimaryButtonStyle}"
-                        Padding="0 5"
-                        Click="Play_Click">
-                </Button>
+                <StackPanel Orientation="Horizontal"
+                            Margin="0 0 0 60">
 
-                <Button Content="Leaderboard"
-                        Style="{DynamicResource PrimaryButtonStyle}"
-                        Margin="0 20"
-                        Padding="10 5"
-                        Click="Leaderboard_Click"/>
+                    <TextBlock Text="TETRIS"
+                               FontFamily="Bauhaus 93" FontSize="120"/>
 
-                <Button Content="Quit"
-                        Style="{DynamicResource PrimaryButtonStyle}"
-                        Padding="0 5"
-                        Click="Quit_Click"/>
+                    <Image Source="Assets\Logo.png"
+                           Width="Auto" Height="90"
+                           Margin="20 0 0 0"/>
+                </StackPanel>
+
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+
+                    <Button Content="Play"
+                            Style="{DynamicResource PrimaryButtonStyle}"
+                            Padding="0 5"
+                            Click="Play_Click">
+                    </Button>
+
+                    <Button Content="Leaderboard"
+                            Style="{DynamicResource PrimaryButtonStyle}"
+                            Margin="0 20"
+                            Padding="10 5"
+                            Click="Leaderboard_Click"/>
+
+                    <Button Content="Quit"
+                            Style="{DynamicResource PrimaryButtonStyle}"
+                            Padding="0 5"
+                            Click="Quit_Click"/>
+                </StackPanel>
             </StackPanel>
         </Grid>
 
         <Grid x:Name="LeaderboardMenu"
-              Background="#CC000000"
               Grid.RowSpan="2"
               Grid.ColumnSpan="3"
               Visibility="Hidden">
+
+            <Grid.Background>
+                <ImageBrush ImageSource="\Assets\LeaderboardBackground.png"/>
+            </Grid.Background>
 
             <Viewbox>
                 <StackPanel>
                     <TextBlock Text="HIGH SCORES"
                                FontSize="45" FontWeight="Bold"
                                TextAlignment="Center"
-                               Margin="0 20 0 35"/>
+                               Margin="0 20 0 35">
+
+                        <TextBlock.Effect>
+                            <DropShadowEffect Color="#2E7D32" BlurRadius="1"/>
+                        </TextBlock.Effect>
+                    </TextBlock>
 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="1."
