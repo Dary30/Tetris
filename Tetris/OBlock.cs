@@ -8,7 +8,7 @@
         };
 
         public override int Id => 4;
-        protected override Position StartOffset => new Position(0, 4);
+        protected override Position StartOffset => new(0, 4);
         protected override Position[][] Tiles => tiles;
     }
 }

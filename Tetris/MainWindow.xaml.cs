@@ -51,7 +51,7 @@ namespace Tetris
         private readonly int minDelay = 100;
         private readonly int delayDecrease = 10;
 
-        private GameState gameState = new GameState();
+        private GameState gameState = new();
 
         public MainWindow()
         {
@@ -68,7 +68,7 @@ namespace Tetris
             {
                 for (int c = 0; c < grid.Columns; c++)
                 {
-                    Image imageControl = new Image
+                    Image imageControl = new()
                     {
                         Width = cellSize,
                         Height = cellSize
@@ -169,9 +169,9 @@ namespace Tetris
             int finalScore = gameState.Score;
 
             string connectionString = "Data Source=Dary\\SQLEXPRESS;Initial Catalog=Tetris;Integrated Security=True";
-            SqlConnection connection = new SqlConnection(connectionString);
+            SqlConnection connection = new(connectionString);
             string query = "INSERT INTO Scores(Score) VALUES(@Score)";
-            SqlCommand command = new SqlCommand(query, connection);
+            SqlCommand command = new(query, connection);
             command.Parameters.AddWithValue("@Score", finalScore);
             connection.Open();
             command.ExecuteNonQuery();
@@ -264,25 +264,21 @@ namespace Tetris
             string sqlQuery = "SELECT TOP 10 * FROM Scores ORDER BY Score DESC;";
             int[] scoreArray = new int[10];
 
-            using(SqlConnection connection = new SqlConnection(connectionString))
+            using(SqlConnection connection = new(connectionString))
             {
-                using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                using SqlCommand command = new(sqlQuery, connection);
+                connection.Open();
+                using SqlDataReader reader = command.ExecuteReader();
+                int i = 0;
+                while (reader.Read())
                 {
-                    connection.Open();
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        int i = 0;
-                        while (reader.Read())
-                        {
-                            int value = reader.GetInt32(0);
-                            scoreArray[i++] = value;
-                        }
-                    }
+                    int value = reader.GetInt32(0);
+                    scoreArray[i++] = value;
                 }
             }
 
-            TextBlock[] textBlocks = new TextBlock[] {Score1, Score2, Score3, Score4, Score5, Score6,
-                                                      Score7, Score8, Score9, Score10};
+            TextBlock[] textBlocks = new TextBlock[] {Score1, Score2, Score3, Score4, Score5,
+                                                      Score6, Score7, Score8, Score9, Score10};
             int j = 0;
             foreach (int score in scoreArray)
             {

@@ -66,9 +66,7 @@
             }
             else
             {
-                Block tmp = CurrentBlock;
-                CurrentBlock = HeldBlock;
-                HeldBlock = tmp;
+                (HeldBlock, CurrentBlock) = (CurrentBlock, HeldBlock);
             }
 
             CanHold = false;
