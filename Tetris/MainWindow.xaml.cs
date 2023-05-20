@@ -147,35 +147,34 @@ namespace Tetris
 
         private async Task GameLoop()
         {
-            if (MainMenu.Visibility != Visibility.Visible)
-            {
-                Draw(gameState);
-            }
-            else
+            if (MainMenu.Visibility == Visibility.Visible)
             {
                 return;
             }
 
             while (!gameState.GameOver)
             {
+                Draw(gameState);
                 int delay = Math.Max(minDelay, maxDelay - (gameState.Score / delayDecrease));
                 await Task.Delay(delay);
                 gameState.MoveBlockDown();
-                Draw(gameState);
             }
 
             GameOverMenu.Visibility = Visibility.Visible;
             FinalScoreText.Text = $"Score: {gameState.Score}";
-            int finalScore = gameState.Score;
+            InsertScoreIntoDatabase(gameState.Score);
+        }
 
+        private static void InsertScoreIntoDatabase(int score)
+        {
             string connectionString = "Data Source=Dary\\SQLEXPRESS;Initial Catalog=Tetris;Integrated Security=True";
-            SqlConnection connection = new(connectionString);
             string query = "INSERT INTO Scores(Score) VALUES(@Score)";
-            SqlCommand command = new(query, connection);
-            command.Parameters.AddWithValue("@Score", finalScore);
+
+            using SqlConnection connection = new(connectionString);
+            using SqlCommand command = new(query, connection);
+            command.Parameters.AddWithValue("@Score", score);
             connection.Open();
             command.ExecuteNonQuery();
-            connection.Close();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -262,29 +261,25 @@ namespace Tetris
 
             string connectionString = "Data Source=Dary\\SQLEXPRESS;Initial Catalog=Tetris;Integrated Security=True";
             string sqlQuery = "SELECT TOP 10 * FROM Scores ORDER BY Score DESC;";
-            int[] scoreArray = new int[10];
 
-            using(SqlConnection connection = new(connectionString))
-            {
-                using SqlCommand command = new(sqlQuery, connection);
-                connection.Open();
-                using SqlDataReader reader = command.ExecuteReader();
-                int i = 0;
-                while (reader.Read())
-                {
-                    int value = reader.GetInt32(0);
-                    scoreArray[i++] = value;
-                }
-            }
+            using SqlConnection connection = new(connectionString);
+            using SqlCommand command = new(sqlQuery, connection);
+            connection.Open();
+            using SqlDataReader reader = command.ExecuteReader();
 
-            TextBlock[] textBlocks = new TextBlock[] {Score1, Score2, Score3, Score4, Score5,
-                                                      Score6, Score7, Score8, Score9, Score10};
-            int j = 0;
-            foreach (int score in scoreArray)
+            int i = 0;
+            while (reader.Read() && i < 10)
             {
-                textBlocks[j].Text = score.ToString();
-                j++;
+                int score = reader.GetInt32(0);
+                SetScoreText(i, score);
+                i++;
             }
+        }
+
+        private void SetScoreText(int i, int score)
+        {
+            TextBlock scoreTextBlock = (TextBlock)FindName($"Score{i + 1}");
+            scoreTextBlock.Text = score.ToString();
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)
