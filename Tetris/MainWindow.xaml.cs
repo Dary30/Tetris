@@ -181,7 +181,7 @@ namespace Tetris
         {
             if (MainMenu.Visibility == Visibility.Visible ||
                 LeaderboardMenu.Visibility == Visibility.Visible ||
-                gameState.GameOver)
+                GameOverMenu.Visibility == Visibility.Visible)
             {
                 return;
             }
