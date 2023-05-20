@@ -179,7 +179,9 @@ namespace Tetris
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (gameState.GameOver)
+            if (MainMenu.Visibility == Visibility.Visible ||
+                LeaderboardMenu.Visibility == Visibility.Visible ||
+                gameState.GameOver)
             {
                 return;
             }
