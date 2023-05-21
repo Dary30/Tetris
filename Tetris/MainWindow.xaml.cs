@@ -262,10 +262,10 @@ namespace Tetris
             MainMenu.Visibility = Visibility.Hidden;
 
             string connectionString = "Data Source=Dary\\SQLEXPRESS;Initial Catalog=Tetris;Integrated Security=True";
-            string sqlQuery = "SELECT TOP 10 * FROM Scores ORDER BY Score DESC;";
+            string query = "SELECT TOP 10 * FROM Scores ORDER BY Score DESC;";
 
             using SqlConnection connection = new(connectionString);
-            using SqlCommand command = new(sqlQuery, connection);
+            using SqlCommand command = new(query, connection);
             connection.Open();
             using SqlDataReader reader = command.ExecuteReader();
 
