@@ -294,5 +294,15 @@ namespace Tetris
         {
             this.Close();
         }
+
+        private void Image_MouseEnter(object sender, MouseEventArgs e)
+        {
+            HelpMenu.Visibility = Visibility.Visible;
+        }
+
+        private void Image_MouseLeave(object sender, MouseEventArgs e)
+        {
+            HelpMenu.Visibility = Visibility.Hidden;
+        }
     }
 }
